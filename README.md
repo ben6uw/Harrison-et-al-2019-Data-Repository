@@ -1,7 +1,9 @@
 # Harrison-et-al-2019-Data-Repository
 Data for Harrison et al 2019 The metabolome as a link in the genotype-phenotype map for peroxide resistance in the fruit fly, Drosophila melanogaster
+# Authors
+    Benjamin R. Harrison, Lu Wang, Erika Gajda, Elise V. Hoffman, Brian Y. Chung, Scott D. Pletcher, Haiwei Gu, Dan Raftery and Daniel E.L. Promislow
 
-# requires R (https://www.r-project.org/)
+    requires R (https://www.r-project.org/)
 
 # List of folders and files in /data:
 # DGRP_peroxide_trials
@@ -10,7 +12,8 @@ Data for Harrison et al 2019 The metabolome as a link in the genotype-phenotype 
     Lifepan data for RNAi experiments on peroxide food, with R code
 # GWAS
     R code for GWAS analysis, including purmutation approach to get P-gene
-# requires: 
+
+    requires: 
     PLINK (http://zzz.bwh.harvard.edu/plink/)
     BED files (http://dgrp2.gnets.ncsu.edu/data/website/dgrp2.bed)
     VCF file for the DGRP Freeze 2.0 calls (http://dgrp2.gnets.ncsu.edu/data/website/dgrp2.vcf)
