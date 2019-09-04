@@ -31,3 +31,4 @@ cbind(genes.to.test.01$V1, gene.score) -> P.gene.phase1.output
 write.table( P.gene.phase1.output, file='/Users/ben/Google_Drive/Applications/plink_mac/DGRP/P.gene.phase1.output')
 
 ## apply cutoff based on these values and run 1,000,000 permutations on the smaller gene list.
+# the code for running the 10^6 permutaitons runs on the terminal (mac) and is in the same GitHub folder as this R file.
