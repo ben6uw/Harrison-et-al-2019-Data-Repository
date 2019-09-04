@@ -1,4 +1,7 @@
-# analysis of CAFE assay 'capilary feeding' experiment
+#
+## analysis of CAFE assay (capilary feeding experiment):
+#
+
 mycol <- c("#8B8378", "#EE9A00") 
 mycol2 <- c(mycol,"#483D8B")
 mycol4 = c("#EEC900", "#CD6600", "#87CEFA", "#104E8B")
