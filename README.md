@@ -11,7 +11,7 @@ List of folders and files in /data:
 # DGRP_peroxide_trials
     Lifespan data for DGRP lines on peroxide food, with R code
 # LC/MS metabolic profiling
-    Untargeted LC/MS data, sample information, XCMS (putative) feature identification
+    Untargeted LC/MS data, sample information, XCMS (putative) feature identification, with R code
 # GAL4_geneswitch_UAS_RNAi
     Lifepan data for RNAi experiments on peroxide food, with R code
 # GWAS
