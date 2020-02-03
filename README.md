@@ -3,7 +3,7 @@ The 'Data' folder (above) contains the repository for:
 
 The metabolome as a link in the genotype-phenotype map for peroxide resistance in the fruit fly, Drosophila melanogaster (2020)
 
-Authors: Benjamin R. Harrison, Lu Wang, Erika Gajda, Elise V. Hoffman, Brian Y. Chung, Scott D. Pletcher, Haiwei Gu, Dan Raftery and Daniel E.L. Promislow
+Authors: Benjamin R. Harrison, Lu Wang, Erika Gajda, Elise V. Hoffman, Brian Y. Chung, Scott D. Pletcher, Dan Raftery and Daniel E.L. Promislow
 
 requires R (https://www.r-project.org/)
 
