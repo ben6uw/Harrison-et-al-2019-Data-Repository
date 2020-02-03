@@ -1,4 +1,4 @@
-# Harrison-et-al-2019-Data-Repository
+# Harrison-et-al-2020-Data-Repository
 The 'Data' folder (above) contains the repository for: 
 
 The metabolome as a link in the genotype-phenotype map for peroxide resistance in the fruit fly, Drosophila melanogaster (2019)
