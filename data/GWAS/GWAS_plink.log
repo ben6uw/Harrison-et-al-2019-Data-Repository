@@ -1,0 +1,32 @@
+PLINK v1.90b6.1 64-bit (28 May 2018)
+Options in effect:
+  --bfile dgrp2_lines.in.peroxide.study_maf0.05_geno0.3
+  --covar plink.eigenvec.txt
+  --covar-number 1-4
+  --linear hide-covar
+  --maf 0.05
+  --out linear-4-hiddencovars.maf0.05
+  --pheno peroxide.residuals.txt
+
+Hostname: Bens-iMac.local
+Working directory: /Users/ben/Google_Drive/Applications/plink_mac/DGRP
+Start time: Mon Oct 21 15:44:05 2019
+
+Random number seed: 1571697845
+16384 MB RAM detected; reserving 8192 MB for main workspace.
+1950223 variants loaded from .bim file.
+180 people (0 males, 180 females) loaded from .fam.
+180 phenotype values present after --pheno.
+Using 1 thread (no multithreaded calculations invoked).
+--covar: 4 out of 20 covariates loaded.
+Before main variant filters, 180 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+Total genotyping rate is 0.939699.
+0 variants removed due to minor allele threshold(s)
+(--maf/--max-maf/--mac/--max-mac).
+1950223 variants and 180 people pass filters and QC.
+Phenotype data is quantitative.
+Writing linear model association results to
+linear-4-hiddencovars.maf0.05.assoc.linear ... done.
+
+End time: Mon Oct 21 15:44:46 2019
