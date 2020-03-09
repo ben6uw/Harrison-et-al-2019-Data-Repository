@@ -1,0 +1,148 @@
+### PCA and clustering of genotype data:
+
+install.packages('pvclust')
+install.packages('ggdendro')
+install.packages('dendextend')
+
+library('plyr')
+library('dplyr')
+library('tidyr')
+library('Hmisc')
+library('stringr')
+library('reshape2')
+library('pvclust')
+library('ape')
+library("ggplot2")
+library("ggdendro")
+library('dendextend')
+
+
+mycol <- c("#8B8378", "#EE9A00") 
+mycol2 <- c(mycol,"#483D8B")
+mycol4 <- c("#EEC900", "#CD6600", "#87CEFA", "#104E8B")
+mycol3 <- mycol4
+
+
+# load data
+read.table("/Users/ben/Google_Drive/Documents/Peroxide/Lu_Wangs_batch_corrected_analysis/neg.normalized.dat", header=T, sep=',', stringsAsFactors = F) -> data.neg
+# these data were processed by Lu Wang:
+# median normalized
+# remove effect of LC-MS batch
+# remove effect of sample weight
+           
+data.neg[1:5,1:14]
+paste0(data.neg$line, '-', data.neg$treatment) -> data.neg$line_treat
+data.neg[ ,c(1:5, 2705, 6:2704)] -> data.neg
+
+table(data.neg$treatment)
+data.neg[data.neg$treatment == 'Ctr', ] -> controls
+data.neg[data.neg$treatment == 'H2O2', ] -> treats
+
+treats[1:5,1:16]
+aggregate(treats[ ,15:ncol(treats)], by=list(treats$line_treat), mean) -> treat.means
+           treat.means[1:4, 1:16]
+           as.matrix(treat.means[ ,-c(1)]) -> treat.mat
+           rownames(treat.mat) <- treats$trait[match(treat.means$Group.1, treats$line_treat)]
+           treat.mat[1:4, 1:6]
+           
+
+aggregate(controls[ ,15:ncol(controls)], by=list(controls$line_treat), mean) -> control.means
+           control.means[1:4, 1:16]
+           as.matrix(control.means[ ,-c(1)]) -> control.mat
+           rownames(control.mat) <- controls$trait[match(control.means$Group.1, controls$line_treat)]
+           control.mat[1:4, 1:6]
+           
+par(mar=c(4,6,6,10))
+
+## use ggplot tools to draw dendrogram
+par(mar=c(4,6,6,10))
+t.dend <- treat.mat %>% scale %>% dist %>% hclust (method='ward.D') %>% as.dendrogram
+ifelse(dendro_data(t.dend)$labels$label == 'resistant', mycol4[2], mycol4[4]) -> t.leaf.colors
+t.leaf.colors
+t.dend %>% set('leaves_col', t.leaf.colors) %>% set('leaves_pch', 19) %>% set('labels', '') %>% set('leaves_cex', 2) %>% plot (horiz=T, main='Peroxide-Treated Drosophila Metabolome')
+par(xpd=TRUE)
+legend(-10,10, legend=c('sensitive', 'resistant'), pch=c(19), bty='n', cex=1, col=mycol4[c(4, 2)])
+           
+
+#########################################################################################################################################
+# hierarchical clustering of genotypes:
+#########################################################################################################################################
+           
+# get list of lines measured for metabolomics:
+samp.info <- read.csv("/Users/ben/Google_Drive/Documents/Peroxide/Lu_Wangs_Analysis/sample.info.2.csv", header=T, stringsAsFactors = F)
+head(samp.info)
+samp.info[ ,c(5, 10)] -> lines
+unique(lines) -> lines
+lines[-c(1), ] -> lines
+lines$trait <- ifelse(lines$lifespan > 80, 'resistant', 'sensitive')
+head(lines)
+lines$line -> lines.measured
+         
+           
+# pull genotypes from all.calls:
+all.calls <- read.table("/Users/ben/Google_Drive/Documents/generic.GWAS.analysis/dgrp2.csv", sep = '\t', stringsAsFactors = F) # from dgrp2 website (http://dgrp2.gnets.ncsu.edu/)
+DGRP <- read.table("/Users/ben/Google_Drive/Documents/generic.GWAS.analysis/DGRP2- List of all of the lines.csv", stringsAsFactors = F)
+DGRP$V1 <- paste0("ral-", DGRP$V1)
+SNP.info <- c('chromosome','position', 'ID', 'ref allele', 'alt allele', 'V6', 'V7', 'allele frequencies', 'V9')
+colnames(all.calls) <- c(SNP.info, t(DGRP))
+
+# use only 'LD-puned' SNPs made in PLINK (call: plink --bfile peroxide.DGRP  --indep-pairwise 50 5 0.5 --maf 0.05 --geno 0.3, keep-fam lines.in.study) 
+read.table("/Users/ben/Google_Drive/Applications/plink_mac/DGRP/plink.prune.in") -> pruned.snps
+head(pruned.snps)
+all.calls[all.calls$ID %in% pruned.snps$V1, ] -> prunes
+prunes[1:4, 1:10]
+rm(all.calls)
+prunes[ ,10:ncol(prunes)] -> prunes
+prunes[ ,lines.measured] -> prunes           
+prunes[prunes == "./."] <- NA
+prunes[prunes == "1/1"] <- 2
+prunes[prunes == "0/0"] <- 1
+           
+prunes[complete.cases(prunes), ] -> z
+z[1:10, 1:10]
+t(apply(t(z), 1, as.numeric)) -> t
+t[1:4,1:10]
+rownames(t)
+t[as.character(lines$line), ] -> t
+lines$trait -> rownames(t)
+
+
+par(mar=c(4,6,6,10))
+## use ggplot tools to draw dendrogram
+geno.dend <- t %>% scale %>% dist %>% hclust (method='ward.D') %>% as.dendrogram
+ifelse(dendro_data(geno.dend)$labels$label == 'sensitive', mycol4[4], mycol4[2]) -> leaf.colors
+geno.dend %>% set('labels', '') %>% set('leaves_cex', 2) %>% set('leaves_pch', 19) %>% set("leaves_col", leaf.colors) %>% plot (horiz=T, main='Genetic Variation')
+           
+
+t[1:4,1:5]
+prcomp(t) -> genopc
+pairs(genopc$x[ ,1:5], col=as.numeric(as.factor(lines$trait)), pch=16)
+plot(genopc$x[ ,1:2], col=as.numeric(as.factor(lines$trait)), pch=16, las=1)
+
+mycol4[c(2,4)] -> mycol2.2
+as.data.frame(cbind(lines, genopc$x)) -> genopc.dat
+head(genopc.dat)
+
+summary(genopc)
+
+p <- ggplot(genopc.dat, aes(x=PC1,y=PC2))+
+  geom_point(size=3, aes(color=trait))+ 
+  scale_colour_manual(values=mycol2.2) +
+  stat_ellipse(aes(x=PC1,y=PC2, color=trait), geom="polygon", level=0.5, alpha=0.05) +
+  theme(axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(colour="black", size=10),
+        axis.text.y = element_text(colour="black", size=10),
+        panel.grid.major = element_blank(),
+        legend.position = 'none',
+        panel.grid.minor = element_blank(),
+        panel.border = element_rect(fill=NA,color="black", size=0.5, linetype="solid"),
+        panel.background = element_blank())
+
+#pdf(file="./Lu_Wangs_batch_corrected_analysis/genotype.PC1 x PC2 trait.pdf", width=4.5, height=4)
+p
+dev.off()
+plot(p)
+
+pairs(genopc.dat[ ,4:8], col=as.numeric(as.factor(genopc.dat$trait)), pch=16)
+
+
