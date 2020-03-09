@@ -10,8 +10,6 @@ requires R (https://www.r-project.org/)
 List of folders and files in /data:
 # DGRP_peroxide_trials
     Lifespan data for DGRP lines on peroxide food, with R code
-# LC/MS metabolic profiling
-    Untargeted LC/MS data, sample information, XCMS (putative) feature identification, with R code
 # GAL4_geneswitch_UAS_RNAi
     Lifepan data for RNAi experiments on peroxide food, with R code
 # GWAS
@@ -22,9 +20,13 @@ List of folders and files in /data:
     BED files (http://dgrp2.gnets.ncsu.edu/data/website/dgrp2.bed) This is further modified with PLINK to make a BED file that only contains the lines in the study and the variants that pass the MAF and missingness thresholds. The plink call: plink -bfile (path to existing .bed file) --make-bed --maf 0.05 --geno 0.3 --keep-fam (list of FID to retain) --out 'name of output .bed file'
     VCF file for the DGRP Freeze 2.0 calls (http://dgrp2.gnets.ncsu.edu/data/website/dgrp2.vcf) These are used for LD analysis, you will benifit from converting the genotypes into a numeric matrix
     Variant annotation files (http://dgrp2.gnets.ncsu.edu/data/website/dgrp.fb557.annot.txt) for the DGRP 
+# LC_MS_data
+    Untargeted LC/MS data, sample information, XCMS (putative) feature identification, with R code
 # NPF.survival.H2O2
     Survival data for NPF mutant
 # feeding_rate_experiments
     Feeding rate data for flies on peroxide food, with R code
+# heritability
+    R code and data to compute broad sense heritability and genomic heritability h^2(SNP)
 # supplemental_carbohydrate_experiment
     Supplemental carbohydrate data, with R code
