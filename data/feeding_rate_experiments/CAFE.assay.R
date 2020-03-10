@@ -7,10 +7,10 @@ mycol2 <- c(mycol,"#483D8B")
 mycol4 = c("#EEC900", "#CD6600", "#87CEFA", "#104E8B")
 mycol3 <- mycol4
 
-setwd("/Users/ben/Google Drive/Documents/Peroxide/Elises.Feeding.Experiments")
+setwd("file_path") # set the working directory to access the data on your PC
 list.files()
 
-perfeed2 <- read.csv('peroxide.feeding.assay.csv', header=T, stringsAsFactors=T)
+perfeed2 <- read.csv('../peroxide.feeding.assay.csv', header=T, stringsAsFactors=T)
 names(perfeed2)
 perfeed2$linefood <- paste(perfeed2$line, perfeed2$food, sep=".")
 names(perfeed2) <- c("vial", "line", "food",  "height.consumed", "alive", "linefood")
