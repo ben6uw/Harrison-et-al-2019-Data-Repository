@@ -4,7 +4,7 @@ mycol4 = c("#EEC900", "#CD6600", "#87CEFA", "#104E8B")
 mycol3 <- mycol4
 
 ### Blue dye assay with and without peroxide treatment (3/1/2018):
-read.csv("/Users/ben/Google_Drive/Documents/BlueFeedingAssay/3-1-2018.blue.feeding.assay.with.peroxide.treatment.csv", header=T) -> blue
+read.csv("../3-1-2018.blue.feeding.assay.with.peroxide.treatment.csv", header=T) -> blue
 colnames(blue) [6] <- 'well'
 as.character(blue$well) -> blue$well
 blue[ ,7:47] / blue$number.of.flies -> blue [ ,48:88] # corrects the Abs values for the diffenet numbers of flies per sample
