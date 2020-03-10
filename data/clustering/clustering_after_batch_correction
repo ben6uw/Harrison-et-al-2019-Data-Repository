@@ -24,7 +24,7 @@ mycol3 <- mycol4
 
 
 # load data
-read.table("/Users/ben/Google_Drive/Documents/Peroxide/Lu_Wangs_batch_corrected_analysis/neg.normalized.dat", header=T, sep=',', stringsAsFactors = F) -> data.neg
+read.table("../neg.normalized.dat", header=T, sep=',', stringsAsFactors = F) -> data.neg
 # these data were processed by Lu Wang:
 # median normalized
 # remove effect of LC-MS batch
@@ -69,7 +69,7 @@ legend(-10,10, legend=c('sensitive', 'resistant'), pch=c(19), bty='n', cex=1, co
 #########################################################################################################################################
            
 # get list of lines measured for metabolomics:
-samp.info <- read.csv("/Users/ben/Google_Drive/Documents/Peroxide/Lu_Wangs_Analysis/sample.info.2.csv", header=T, stringsAsFactors = F)
+samp.info <- read.csv("../sample.info.2.csv", header=T, stringsAsFactors = F)
 head(samp.info)
 samp.info[ ,c(5, 10)] -> lines
 unique(lines) -> lines
@@ -80,14 +80,14 @@ lines$line -> lines.measured
          
            
 # pull genotypes from all.calls:
-all.calls <- read.table("/Users/ben/Google_Drive/Documents/generic.GWAS.analysis/dgrp2.csv", sep = '\t', stringsAsFactors = F) # from dgrp2 website (http://dgrp2.gnets.ncsu.edu/)
-DGRP <- read.table("/Users/ben/Google_Drive/Documents/generic.GWAS.analysis/DGRP2- List of all of the lines.csv", stringsAsFactors = F)
+all.calls <- read.table("../dgrp2.csv", sep = '\t', stringsAsFactors = F) # from dgrp2 website (http://dgrp2.gnets.ncsu.edu/)
+DGRP <- read.table("../DGRP2- List of all of the lines.csv", stringsAsFactors = F)
 DGRP$V1 <- paste0("ral-", DGRP$V1)
 SNP.info <- c('chromosome','position', 'ID', 'ref allele', 'alt allele', 'V6', 'V7', 'allele frequencies', 'V9')
 colnames(all.calls) <- c(SNP.info, t(DGRP))
 
 # use only 'LD-puned' SNPs made in PLINK (call: plink --bfile peroxide.DGRP  --indep-pairwise 50 5 0.5 --maf 0.05 --geno 0.3, keep-fam lines.in.study) 
-read.table("/Users/ben/Google_Drive/Applications/plink_mac/DGRP/plink.prune.in") -> pruned.snps
+read.table("../plink.prune.in") -> pruned.snps
 head(pruned.snps)
 all.calls[all.calls$ID %in% pruned.snps$V1, ] -> prunes
 prunes[1:4, 1:10]
@@ -138,11 +138,8 @@ p <- ggplot(genopc.dat, aes(x=PC1,y=PC2))+
         panel.border = element_rect(fill=NA,color="black", size=0.5, linetype="solid"),
         panel.background = element_blank())
 
-#pdf(file="./Lu_Wangs_batch_corrected_analysis/genotype.PC1 x PC2 trait.pdf", width=4.5, height=4)
-p
-dev.off()
 plot(p)
 
-pairs(genopc.dat[ ,4:8], col=as.numeric(as.factor(genopc.dat$trait)), pch=16)
+pairs(genopc.dat[ ,4:8], col=as.numeric(as.factor(genopc.dat$trait)), pch=16) # examine more PCs
 
 
