@@ -1,5 +1,5 @@
 
-read.table("/Users/ben/Google_Drive/Applications/GBLUP/individual.pheno.with.covars", header = T, stringsAsFactors = T) -> pheno # blocks with non-random selection of DGRP lines were excluded from hertiability analysis to conform with the asumptions of linear modeling
+read.table("../individual.pheno.with.covars", header = T, stringsAsFactors = T) -> pheno # blocks with non-random selection of DGRP lines were excluded from hertiability analysis to conform with the asumptions of linear modeling
 
 #####################################################################
 # Broad Sense Heritabilty, estimated as the among line varaince over the total variance (using ANOVA)
@@ -39,8 +39,8 @@ dim(X)
 
 # load relationship matrix 
 # this one is based on LD-pruned variants, each at genotpye freq >70%, MAF >5%
-read.table('/Users/ben/Google_Drive/Applications/plink_mac/DGRP/prune.rel', header=F, stringsAsFactors = F) -> rel
-read.table('/Users/ben/Google_Drive/Applications/plink_mac/DGRP/prune.rel.id', header=F, stringsAsFactors = F) -> rel.id
+read.table('../prune.rel', header=F, stringsAsFactors = F) -> rel
+read.table('../prune.rel.id', header=F, stringsAsFactors = F) -> rel.id
 colnames(rel) <- rel.id$V1
 rownames(rel) <- rel.id$V1
 as.matrix(rel) -> rel
