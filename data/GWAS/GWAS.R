@@ -17,7 +17,7 @@ mycol4 <- c("#EEC900", "#CD6600", "#87CEFA", "#104E8B")
 
 
 ## load PLink mapping data [see: ../GWAS_plink.log for details of PLINK call]
-read.table("/Users/ben/Google_Drive/Applications/plink_mac/DGRP/linear-4-hiddencovars.maf0.05.assoc.linear", stringsAsFactors = F, header=T) -> plink
+read.table("../linear-4-hiddencovars.maf0.05.assoc.linear", stringsAsFactors = F, header=T) -> plink
 plink[plink$TEST == 'ADD', ] -> plink # removes results from the covariates (e.g. COV1, COV2...) for each SNP. What's left is ADD, which is the asociation test for the SNP + covariates on the phentoype in the additive model (in the DGRP this is 'two allele doses' vs. 'zero allele doses')  
 plink[!is.na(plink$BP), ] -> plink 
 plink[!is.na(plink$P), ] -> plink 
@@ -27,7 +27,7 @@ head(plink)
 ################################################################################################
 ## test the significance of each genotype PC using the Tracy-Windom statistic:
 ################################################################################################
-read.table("/Users/ben/Google_Drive/Applications/plink_mac/DGRP/perox.eigenval", stringsAsFactors = F, header=F) -> eigenvalues # eigenvalues from PLINK'c --pca call to the bed file containing only lines measured in the peroxide trials at <30% missingess and >5% MAF
+read.table("../perox.eigenval", stringsAsFactors = F, header=F) -> eigenvalues # eigenvalues from PLINK'c --pca call to the bed file containing only lines measured in the peroxide trials at <30% missingess and >5% MAF
 head(eigenvalues)
 plot(eigenvalues$V1/sum(eigenvalues$V1), pch=19, las=1)
 
@@ -42,7 +42,7 @@ result$SigntEigenL # number of significant eigenvalues
 ## Q-Q plot
 qqman::qq(plink$P, main=NULL, las=1, cex=0.8, cex.axis = 1)
 
-quartz.save("/Users/ben/Google_Drive/Documents/Peroxide/Results from online GWAS/peroxide.QQ.plot.jpg", type = "jpg", device = dev.cur(), dpi = 300)
+quartz.save("../peroxide.QQ.plot.jpg", type = "jpg", device = dev.cur(), dpi = 300)
 ################################################################################################
 
 p.adjust(plink$P) -> plink$FDR
@@ -67,14 +67,14 @@ significant.SNPS <- c('2L_530188_SNP',
 # LD analysis among the SNPS:
 ################################################################################################
 
-read.csv("/Users/ben/Google_Drive/Documents/generic.GWAS.analysis/dgrp2.simplified.csv", stringsAsFactors = F, header=T) -> calls # reads a numeric df of the DGRP genotypes
+read.csv("../dgrp2.simplified.csv", stringsAsFactors = F, header=T) -> calls # reads a numeric df of the DGRP genotypes
 row.names(calls) <- calls[ ,1]
 calls[ ,-c(1)] -> calls
 
 calls[rownames(calls) %in% significant.SNPS, ] -> genotypes
 
 # get the identify of the DGRP lines measured in the study:
-read.table("/Users/ben/Google_Drive/Applications/plink_mac/DGRP/peroxide.residuals.txt", header=T, stringsAsFactors = F) -> phenotype
+read.table("../peroxide.residuals.txt", header=T, stringsAsFactors = F) -> phenotype
 cSplit(phenotype, 'FID', sep='_', drop=T) -> phenotype
 paste0('Ral_', phenotype$FID_2) -> lines.measured
 genotypes[ ,lines.measured] -> genotypes
@@ -105,12 +105,5 @@ plink$CHR[plink$CHR == 7] <- 6
 table(plink$CHR)
 #
 
-par(mfrow=c(1,1))
-quartz(height = 3, width = 5)
 manhattan(plink, chr = "CHR", bp = "BP", p = "P", snp = as.character("SNP"), chrlabs = c('X', '2L', '2R','3L','3R','4'), genomewideline = F, highlight = NULL, logp = T, cex=0.5, cex.main = 1, cex.axis = 1,  cex.lab=1, ylim=c(2, 8), suggestiveline = F)
-
-quartz.save("/Users/ben/Google_Drive/Documents/Peroxide/Results from online GWAS/peroxide.plink.manhattan.jpg", type = "jpg", device = dev.cur(), dpi = 400)
-
-dev.off()
-dev.off()
 #
