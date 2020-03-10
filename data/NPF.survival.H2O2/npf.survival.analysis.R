@@ -2,7 +2,7 @@
 library(splitstackshape)
 library(survival)
 
-read.table("/Users/ben/Google_Drive/Documents/Peroxide/NPF.survival.H2O2/SurvData_2019-04-12 0820.csv", header=T, sep=',', stringsAsFactors = F) -> dat 
+read.table("../SurvData_2019-04-12 0820.csv", header=T, sep=',', stringsAsFactors = F) -> dat 
 
 head(dat)
 unique(dat$strata)
