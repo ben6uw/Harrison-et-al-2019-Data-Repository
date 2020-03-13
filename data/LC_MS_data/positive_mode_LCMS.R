@@ -33,6 +33,11 @@ removecol="negLabel"
 datapath="../../../Metabolomics2016/Newdatafiles/pid1652_Positive_sample/XCMS-Posdata-93samples-Promislow.xlsx"
 ```
 
+# load unique functions:
+source("./pca_set.R",local = T) 
+source("./pca_set2.R",local = T)
+source("./pca_set3.R",local = T)
+source("./heatmaps_set.R",local = T)
 
 ```{r main, include=FALSE}
 setwd(paste0("/data5/analyses/Daniel_Promislow/Ben_Harrison_pid2005/",datamode,"_mode/bioconductor"))
